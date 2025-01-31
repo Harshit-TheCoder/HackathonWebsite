@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <div style="height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <center><h1>Emotion Detection Website</h1></center>
-        <form action="/predict", method="POST">
+        <form action="/predict", method="POST" class="emotion-form">
 
             <div class="container" style="width: 900px;">
                 <div class="row">
@@ -120,7 +120,6 @@
                             <option value="yo">Yoruba</option>
                             <option value="zu">Zulu</option>
                         </select>
-                        
                     </div>
                 </div>
                 <br>
@@ -141,14 +140,49 @@
             </div>
             
         </form>
+
+        <br><br><h3>Fake Real Detection</h3>
+
+
+
+        <form action="/detectFakeReal", method="POST" class="fake-real-form">
+
+            <div class="container" style="width: 900px;">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" class="form-input form-control" placeholder="Enter a sentence" name="review">
+                    </div>
+                    <br><br>
+                    <div class="col-12">
+                        
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" onclick="send_data1()">Submit</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Falsity of Review/News:</h5>
+                    </div>
+                    <div class="col-6">
+                        <h5 id="prediction1"></h5>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
     </div>
 
 
     <script>
         function send_data(){
-            document.querySelector('form').addEventListener('submit', function(event) {
+            document.querySelector('.emotion-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission behavior
-            var fd = new FormData(document.querySelector('form'));
+            var fd = new FormData(document.querySelector('.emotion-form'));
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/predict', true);
             document.getElementById('prediction').innerHTML = "Wait predicting!......";
@@ -159,6 +193,32 @@
                         document.getElementById('prediction').innerHTML = response;
                     } else {
                         document.getElementById('prediction').innerHTML = "Error occurred while predicting.";
+                    }
+                }
+            };
+            xhr.send(fd);
+        });
+
+        }
+
+
+
+
+
+        function send_data1(){
+            document.querySelector('.fake-real-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            var fd = new FormData(document.querySelector('.fake-real-form'));
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/detectFakeReal', true);
+            document.getElementById('prediction1').innerHTML = "Wait predicting!......";
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const response = xhr.responseText;
+                        document.getElementById('prediction1').innerHTML = response;
+                    } else {
+                        document.getElementById('prediction1').innerHTML = "Error occurred while predicting.";
                     }
                 }
             };

@@ -18,6 +18,8 @@ emotion_emoji = [ '😞 or 😢', '😊 or 😄', '❤️ or 😍', '😡 or �
 model = load_model('trained_weights/lstm_best_model.h5')
 tkn = pkl.load(open('trained_weights/wordpiece.pkl', 'rb'))
 v = joblib.load("trained_weights/tfv.pkl")
+news = joblib.load("trained_weights/fake_news_model.pkl")
+
 
 @app.route('/predict', methods=['POST'])
 async def predict():
@@ -50,6 +52,22 @@ async def predict():
     answer = str(emotion_array[answer_idx]) + emotion_emoji[answer_idx]
     return answer
 
+
+@app.route('/detectFakeReal', methods=['POST'])
+def detectFakeReal():
+    data = request.form.get('review')
+    data = list(data)
+    data = v.transform(data)
+    y_pred = news.predict(data)[0]
+    print(y_pred)
+    # idx = np.argmax(y_pred)
+    # result = idx
+    result=""
+    if(y_pred == 1):
+        result = "News is Fake"
+    else:
+        result = "News is Real"
+    return result
 
 @app.route('/')
 def home():
