@@ -1,8 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <div style="height: 60vh;">
+    <div style="height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <center><h1>Emotion Detection Website</h1></center>
+        <form action="/predict", method="POST">
+            <input type="text" placeholder="Enter a sentence" class="sentence">
+            <h5>Result</h5>
+            <h5 id="prediction"></h5>
+        </form>
     </div>
+
+
+    <script>
+        function send_data(){
+            document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            var fd = new FormData(document.querySelector('form'));
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/predict', true);
+            document.getElementById('prediction').innerHTML = "Wait predicting!......";
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const response = xhr.responseText;
+                        document.getElementById('prediction').innerHTML = response;
+                    } else {
+                        document.getElementById('prediction').innerHTML = "Error occurred while predicting.";
+                    }
+                }
+            };
+            xhr.send(fd);
+        });
+
+        }
+    </script>
 
 {% endblock %}
