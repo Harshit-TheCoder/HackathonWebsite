@@ -15,17 +15,33 @@
 
 # print("Download complete!")
 
-from pytube import YouTube  
+import whisper
+import os
+import yt_dlp
+from pytube import YouTube
 
 url = "https://www.youtube.com/watch?v=W6wVU5b5nQk"
 def extract_audio(youtube_url):
+    title = "audio"
+    ydl_opts = {
+        "format": "bestaudio/best",  # Best quality audio
+        "outtmpl": f"static/uploads1/{title}.%(ext)s",  # Save with video title
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",  # Extract audio using FFmpeg
+            "preferredcodec": "mp3",  # Convert to MP3
+            "preferredquality": "192",  # Set quality
+        }],
+    }
 
-    yt = YouTube(youtube_url) 
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
 
-    audio_stream = yt.streams.filter(only_audio=True).first()  
+    model = whisper.load_model("small")
 
-    audio_stream.download()  
-
+    URL = "static/uploads1/audio.mp3"
+    model = whisper.load_model("small")
+    result = model.transcribe(URL)
+    print(result["text"])
 
 
 # Example usage

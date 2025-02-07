@@ -12,6 +12,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from pytube import YouTube
 from dotenv import load_dotenv
 import os
+import yt_dlp
 
 # Initialize the translator
 translator = Translator()
@@ -59,33 +60,30 @@ def chatbot():
 
 @app.route("/video_emotion_detection", methods=['POST'])
 def video_emotion_detection():
+    url = request.form.get("yt_url")
     print("Route hit")
-    ytvideo = request.form.get("yt_url")
-    print(ytvideo)
-    if ytvideo:
-        print(f"Downloading video from URL: {ytvideo}")
-        yt = YouTube(ytvideo)
-        stream = yt.streams.get_highest_resolution()
-        videoname = yt.title+".mp4"
-        video_path = os.path.join(UPLOAD_FOLDER2, videoname)
-        print(f"Saving video to: {video_path}")
-        stream.download(output_path=UPLOAD_FOLDER2, filename=videoname)
-        video_path = os.path.join(UPLOAD_FOLDER2, videoname)
-        print("Video downloaded successfully!")
+    title = "audio"
+    ydl_opts = {
+        "format": "bestaudio/best",  
+        "outtmpl": f"static/uploads1/{title}.%(ext)s",  
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",  
+            "preferredcodec": "mp3", 
+            "preferredquality": "192",  
+        }],
+    }
 
-    # if "file3" not in request.files:
-    #     return jsonify({"error": "No file uploaded!"})
-    # file = request.files["file3"]
-    # if file.filename == "":
-    #     return jsonify({"error": "No selected file!"})
-    # filepath = os.path.join(app.config["UPLOAD_FOLDER2"], file.filename)
-    # file.save(filepath)
-    # video = mp.VideoFileClip(filepath)
-    # audio_path = "audio.wav"
-    # video.audio.write_audiofile(audio_path)
-    # result = model.transcribe(audio_path, task="translate")
-    # result = result["text"]
-    return "Response"
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
+
+    model = whisper.load_model("small")
+
+    URL = "static/uploads1/audio.mp3"
+    model = whisper.load_model("small")
+    result = model.transcribe(URL)
+    print(result["text"])
+
+    return result["text"]
 
 
 @app.route("/transcribe", methods=["POST"])
