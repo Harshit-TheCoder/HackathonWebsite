@@ -1,231 +1,414 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block content %}
-    <div style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <center><h1>Emotion Detection Website</h1></center>
-        <form action="/predict", method="POST" class="emotion-form">
+    <div style="display: flex; flex-direction: row;">
 
-            <div class="container" style="width: 900px;">
-                <div class="row">
-                    <div class="col-12">
-                        <input type="text" class="form-input form-control" placeholder="Enter a sentence" name="sentence">
+        <div style="height: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 80%;">
+            <center><h1>Emotion Detection Website</h1></center>
+            <form action="/predict", method="POST" class="emotion-form">
+    
+                <div class="container" style="width: 900px;">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" class="form-input form-control" placeholder="Enter a sentence" name="sentence">
+                        </div>
                     </div>
                     <br><br>
-                    <div class="col-12">
-                        <select name="language" class="form-select">
-                            <option value="af">Afrikaans</option>
-                            <option value="sq">Albanian</option>
-                            <option value="am">Amharic</option>
-                            <option value="ar">Arabic</option>
-                            <option value="hy">Armenian</option>
-                            <option value="az">Azerbaijani</option>
-                            <option value="eu">Basque</option>
-                            <option value="be">Belarusian</option>
-                            <option value="bn">Bengali</option>
-                            <option value="bs">Bosnian</option>
-                            <option value="bg">Bulgarian</option>
-                            <option value="ca">Catalan</option>
-                            <option value="ceb">Cebuano</option>
-                            <option value="ny">Chichewa</option>
-                            <option value="zh-cn">Chinese (Simplified)</option>
-                            <option value="zh-tw">Chinese (Traditional)</option>
-                            <option value="co">Corsican</option>
-                            <option value="hr">Croatian</option>
-                            <option value="cs">Czech</option>
-                            <option value="da">Danish</option>
-                            <option value="nl">Dutch</option>
-                            <option value="en">English</option>
-                            <option value="eo">Esperanto</option>
-                            <option value="et">Estonian</option>
-                            <option value="tl">Filipino</option>
-                            <option value="fi">Finnish</option>
-                            <option value="fr">French</option>
-                            <option value="fy">Frisian</option>
-                            <option value="gl">Galician</option>
-                            <option value="ka">Georgian</option>
-                            <option value="de">German</option>
-                            <option value="el">Greek</option>
-                            <option value="gu">Gujarati</option>
-                            <option value="ht">Haitian Creole</option>
-                            <option value="ha">Hausa</option>
-                            <option value="haw">Hawaiian</option>
-                            <option value="iw">Hebrew</option>
-                            <option value="hi">Hindi</option>
-                            <option value="hmn">Hmong</option>
-                            <option value="hu">Hungarian</option>
-                            <option value="is">Icelandic</option>
-                            <option value="ig">Igbo</option>
-                            <option value="id">Indonesian</option>
-                            <option value="ga">Irish</option>
-                            <option value="it">Italian</option>
-                            <option value="ja">Japanese</option>
-                            <option value="jw">Javanese</option>
-                            <option value="kn">Kannada</option>
-                            <option value="kk">Kazakh</option>
-                            <option value="km">Khmer</option>
-                            <option value="ko">Korean</option>
-                            <option value="ku">Kurdish (Kurmanji)</option>
-                            <option value="ky">Kyrgyz</option>
-                            <option value="lo">Lao</option>
-                            <option value="la">Latin</option>
-                            <option value="lv">Latvian</option>
-                            <option value="lt">Lithuanian</option>
-                            <option value="lb">Luxembourgish</option>
-                            <option value="mk">Macedonian</option>
-                            <option value="mg">Malagasy</option>
-                            <option value="ms">Malay</option>
-                            <option value="ml">Malayalam</option>
-                            <option value="mt">Maltese</option>
-                            <option value="mi">Maori</option>
-                            <option value="mr">Marathi</option>
-                            <option value="mn">Mongolian</option>
-                            <option value="my">Myanmar (Burmese)</option>
-                            <option value="ne">Nepali</option>
-                            <option value="no">Norwegian</option>
-                            <option value="or">Odia (Oriya)</option>
-                            <option value="ps">Pashto</option>
-                            <option value="fa">Persian</option>
-                            <option value="pl">Polish</option>
-                            <option value="pt">Portuguese</option>
-                            <option value="pa">Punjabi</option>
-                            <option value="ro">Romanian</option>
-                            <option value="ru">Russian</option>
-                            <option value="sm">Samoan</option>
-                            <option value="gd">Scots Gaelic</option>
-                            <option value="sr">Serbian</option>
-                            <option value="st">Sesotho</option>
-                            <option value="sn">Shona</option>
-                            <option value="sd">Sindhi</option>
-                            <option value="si">Sinhala</option>
-                            <option value="sk">Slovak</option>
-                            <option value="sl">Slovenian</option>
-                            <option value="so">Somali</option>
-                            <option value="es">Spanish</option>
-                            <option value="su">Sundanese</option>
-                            <option value="sw">Swahili</option>
-                            <option value="sv">Swedish</option>
-                            <option value="tg">Tajik</option>
-                            <option value="ta">Tamil</option>
-                            <option value="te">Telugu</option>
-                            <option value="th">Thai</option>
-                            <option value="tr">Turkish</option>
-                            <option value="uk">Ukrainian</option>
-                            <option value="ur">Urdu</option>
-                            <option value="ug">Uyghur</option>
-                            <option value="uz">Uzbek</option>
-                            <option value="vi">Vietnamese</option>
-                            <option value="cy">Welsh</option>
-                            <option value="xh">Xhosa</option>
-                            <option value="yi">Yiddish</option>
-                            <option value="yo">Yoruba</option>
-                            <option value="zu">Zulu</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-10">
+                            <select name="language" class="form-select">
+                                <option value="af">Afrikaans</option>
+                                <option value="sq">Albanian</option>
+                                <option value="am">Amharic</option>
+                                <option value="ar">Arabic</option>
+                                <option value="hy">Armenian</option>
+                                <option value="az">Azerbaijani</option>
+                                <option value="eu">Basque</option>
+                                <option value="be">Belarusian</option>
+                                <option value="bn">Bengali</option>
+                                <option value="bs">Bosnian</option>
+                                <option value="bg">Bulgarian</option>
+                                <option value="ca">Catalan</option>
+                                <option value="ceb">Cebuano</option>
+                                <option value="ny">Chichewa</option>
+                                <option value="zh-cn">Chinese (Simplified)</option>
+                                <option value="zh-tw">Chinese (Traditional)</option>
+                                <option value="co">Corsican</option>
+                                <option value="hr">Croatian</option>
+                                <option value="cs">Czech</option>
+                                <option value="da">Danish</option>
+                                <option value="nl">Dutch</option>
+                                <option value="en">English</option>
+                                <option value="eo">Esperanto</option>
+                                <option value="et">Estonian</option>
+                                <option value="tl">Filipino</option>
+                                <option value="fi">Finnish</option>
+                                <option value="fr">French</option>
+                                <option value="fy">Frisian</option>
+                                <option value="gl">Galician</option>
+                                <option value="ka">Georgian</option>
+                                <option value="de">German</option>
+                                <option value="el">Greek</option>
+                                <option value="gu">Gujarati</option>
+                                <option value="ht">Haitian Creole</option>
+                                <option value="ha">Hausa</option>
+                                <option value="haw">Hawaiian</option>
+                                <option value="iw">Hebrew</option>
+                                <option value="hi">Hindi</option>
+                                <option value="hmn">Hmong</option>
+                                <option value="hu">Hungarian</option>
+                                <option value="is">Icelandic</option>
+                                <option value="ig">Igbo</option>
+                                <option value="id">Indonesian</option>
+                                <option value="ga">Irish</option>
+                                <option value="it">Italian</option>
+                                <option value="ja">Japanese</option>
+                                <option value="jw">Javanese</option>
+                                <option value="kn">Kannada</option>
+                                <option value="kk">Kazakh</option>
+                                <option value="km">Khmer</option>
+                                <option value="ko">Korean</option>
+                                <option value="ku">Kurdish (Kurmanji)</option>
+                                <option value="ky">Kyrgyz</option>
+                                <option value="lo">Lao</option>
+                                <option value="la">Latin</option>
+                                <option value="lv">Latvian</option>
+                                <option value="lt">Lithuanian</option>
+                                <option value="lb">Luxembourgish</option>
+                                <option value="mk">Macedonian</option>
+                                <option value="mg">Malagasy</option>
+                                <option value="ms">Malay</option>
+                                <option value="ml">Malayalam</option>
+                                <option value="mt">Maltese</option>
+                                <option value="mi">Maori</option>
+                                <option value="mr">Marathi</option>
+                                <option value="mn">Mongolian</option>
+                                <option value="my">Myanmar (Burmese)</option>
+                                <option value="ne">Nepali</option>
+                                <option value="no">Norwegian</option>
+                                <option value="or">Odia (Oriya)</option>
+                                <option value="ps">Pashto</option>
+                                <option value="fa">Persian</option>
+                                <option value="pl">Polish</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="pa">Punjabi</option>
+                                <option value="ro">Romanian</option>
+                                <option value="ru">Russian</option>
+                                <option value="sm">Samoan</option>
+                                <option value="gd">Scots Gaelic</option>
+                                <option value="sr">Serbian</option>
+                                <option value="st">Sesotho</option>
+                                <option value="sn">Shona</option>
+                                <option value="sd">Sindhi</option>
+                                <option value="si">Sinhala</option>
+                                <option value="sk">Slovak</option>
+                                <option value="sl">Slovenian</option>
+                                <option value="so">Somali</option>
+                                <option value="es">Spanish</option>
+                                <option value="su">Sundanese</option>
+                                <option value="sw">Swahili</option>
+                                <option value="sv">Swedish</option>
+                                <option value="tg">Tajik</option>
+                                <option value="ta">Tamil</option>
+                                <option value="te">Telugu</option>
+                                <option value="th">Thai</option>
+                                <option value="tr">Turkish</option>
+                                <option value="uk">Ukrainian</option>
+                                <option value="ur">Urdu</option>
+                                <option value="ug">Uyghur</option>
+                                <option value="uz">Uzbek</option>
+                                <option value="vi">Vietnamese</option>
+                                <option value="cy">Welsh</option>
+                                <option value="xh">Xhosa</option>
+                                <option value="yi">Yiddish</option>
+                                <option value="yo">Yoruba</option>
+                                <option value="zu">Zulu</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-primary" onclick="send_data()">Submit</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Sentence Emotion:</h5>
+                        </div>
+                        <div class="col-6">
+                            <h5 id="prediction"></h5>
+                        </div>
                     </div>
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col-12">
-                        <button class="btn btn-primary" onclick="send_data()">Submit</button>
+                
+            </form>
+    
+            <br><br><h3>Fake Real Detection</h3>
+    
+    
+    
+            <form action="/detectFakeReal", method="POST" class="fake-real-form">
+    
+                <div class="container" style="width: 900px;">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" class="form-input form-control" placeholder="Enter a sentence" name="review">
+                        </div>
+                        <br><br>
+                        <div class="col-12">
+                            
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary" onclick="send_data1()">Submit</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Falsity of Review/News:</h5>
+                        </div>
+                        <div class="col-6">
+                            <h5 id="prediction1"></h5>
+                        </div>
                     </div>
                 </div>
-                <br>
+                
+            </form>
+            
+            <br><br>
+            <div class="container">
                 <div class="row">
-                    <div class="col-6">
-                        <h5>Sentence Emotion:</h5>
+
+                    <div class="col-4">
+                        <h3>Text Transcription</h3>
+                        <form action="/transcribe" enctype="multipart/form-data" class="form" method="POST">
+                            <input type="file" name="file1">
+                            <button class="btn btn-primary" onclick="send_data2()">Transcribe</button>
+                            <div id="prediction2"></div>
+                        </form>
                     </div>
-                    <div class="col-6">
-                        <h5 id="prediction"></h5>
+
+                    <div class="col-4">
+                        <h3>Text Translation and Transcription</h3>
+                        <form action="/transcribe" enctype="multipart/form-data" class="tform" method="POST">
+                            <input type="file" name="file2">
+                            <button class="btn btn-primary" onclick="send_data3()">Translate</button>
+                            <div id="prediction3"></div>
+                        </form>
                     </div>
+
+                    <div class="col-4">
+                        <h3>Video Emotion Detection</h3>
+                        <form action="/video_emotion_detection" enctype="multipart/form-data" class="mform" method="POST">
+                            <!-- <input type="file" name="file3"> -->
+                            <input type="text" name="yt_url" placeholder="Paste Youtube URL" class="form-control">
+                            <button class="btn btn-primary" onclick="send_data5()">Detect Emotion</button>
+                            <div id="prediction5"></div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
-            
-        </form>
-
-        <br><br><h3>Fake Real Detection</h3>
-
-
-
-        <form action="/detectFakeReal", method="POST" class="fake-real-form">
-
-            <div class="container" style="width: 900px;">
-                <div class="row">
-                    <div class="col-12">
-                        <input type="text" class="form-input form-control" placeholder="Enter a sentence" name="review">
-                    </div>
-                    <br><br>
-                    <div class="col-12">
+    
+    
+        </div>
+        <div style="width: 0.3%; background-color: black; "></div>
+        <div style="width: 19.7%; position: relative; margin-left: 5px;">
+    
+                <div style="height: 80vh; display: flex; flex-direction: column; gap: 3px">
+                    <center><h5>Messages</h5></center>
+                    <div class="messages" id="prediction4" style="height: 70vh; overflow-y: scroll;">
                         
                     </div>
+                    <form action="/chatbot" method="POST" style="width: 100%" class="chatbot-form">
+                        <div style="display: flex; flex-direction: row; position: absolute; bottom: 0; width: 100%;">
+                            <input type="text" name="question" placeholder="Enter your message" class="form-control" style="width: 80%;">
+                            <button>
+                                <img src="../static/images/send-message.png" alt="" style="width: 20px; height: 20px" onclick="send_data4()">
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-warning" onclick="clearChat()">Clear Chat</button>
+                    </form>
+                    
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col-12">
-                        <button class="btn btn-primary" onclick="send_data1()">Submit</button>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-6">
-                        <h5>Falsity of Review/News:</h5>
-                    </div>
-                    <div class="col-6">
-                        <h5 id="prediction1"></h5>
-                    </div>
-                </div>
-            </div>
-            
-        </form>
+                
+        </div>
     </div>
+    
 
 
     <script>
+        function clearChat(){
+            document.getElementById('prediction4').innerHTML = ""; // Clear messages
+            document.querySelector('.chatbot-form input[name="question"]').value = "";
+        }
         function send_data(){
             document.querySelector('.emotion-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission behavior
-            var fd = new FormData(document.querySelector('.emotion-form'));
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/predict', true);
-            document.getElementById('prediction').innerHTML = "Wait predicting!......";
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        const response = xhr.responseText;
-                        document.getElementById('prediction').innerHTML = response;
-                    } else {
-                        document.getElementById('prediction').innerHTML = "Error occurred while predicting.";
+                event.preventDefault(); // Prevent default form submission behavior
+                var fd = new FormData(document.querySelector('.emotion-form'));
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/predict', true);
+                document.getElementById('prediction').innerHTML = "Wait predicting!......";
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = xhr.responseText;
+                            document.getElementById('prediction').innerHTML = response;
+                        } else {
+                            document.getElementById('prediction').innerHTML = "Error occurred while predicting.";
+                        }
                     }
-                }
-            };
-            xhr.send(fd);
-        });
-
+                };
+                xhr.send(fd);
+            });
         }
 
-
-
-
-
+        
         function send_data1(){
             document.querySelector('.fake-real-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission behavior
-            var fd = new FormData(document.querySelector('.fake-real-form'));
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/detectFakeReal', true);
-            document.getElementById('prediction1').innerHTML = "Wait predicting!......";
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        const response = xhr.responseText;
-                        document.getElementById('prediction1').innerHTML = response;
-                    } else {
-                        document.getElementById('prediction1').innerHTML = "Error occurred while predicting.";
+                event.preventDefault(); // Prevent default form submission behavior
+                var fd = new FormData(document.querySelector('.fake-real-form'));
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/detectFakeReal', true);
+                document.getElementById('prediction1').innerHTML = "Wait predicting!......";
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = xhr.responseText;
+                            document.getElementById('prediction1').innerHTML = response;
+                        } else {
+                            document.getElementById('prediction1').innerHTML = "Error occurred while predicting.";
+                        }
                     }
-                }
-            };
-            xhr.send(fd);
-        });
-
+                };
+                xhr.send(fd);
+            });
         }
+
+        function send_data2(){
+            document.querySelector('.form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission behavior
+                var fd = new FormData(document.querySelector('.form'));
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/transcribe', true);
+                document.getElementById('prediction2').innerHTML = "Wait predicting!......";
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = xhr.responseText;
+                            document.getElementById('prediction2').innerHTML = response;
+                            document.querySelector('.sentence').value = response;
+                        } else {
+                            document.getElementById('prediction2').innerHTML = "Error occurred while predicting.";
+                        }
+                    }
+                };
+                xhr.send(fd);
+            });
+        }
+
+        function send_data3(){
+            document.querySelector('.tform').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission behavior
+                var fd = new FormData(document.querySelector('.tform'));
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/translate', true);
+                document.getElementById('prediction3').innerHTML = "Wait predicting!......";
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = xhr.responseText;
+                            document.getElementById('prediction3').innerHTML = response;
+                            document.querySelector('.sentence').value = response;
+                        } else {
+                            document.getElementById('prediction3').innerHTML = "Error occurred while predicting.";
+                        }
+                    }
+                };
+                xhr.send(fd);
+            });
+        }
+
+
+        function send_data5(){
+            document.querySelector('.mform').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission behavior
+                var fd = new FormData(document.querySelector('.mform'));
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/video_emotion_detection', true);
+                document.getElementById('prediction5').innerHTML = "Wait predicting5!......";
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const response = xhr.responseText;
+                            document.getElementById('prediction5').innerHTML = response;
+                        } else {
+                            document.getElementById('prediction5').innerHTML = "Error occurred while predicting.";
+                        }
+                    }
+                };
+                xhr.send(fd);
+            });
+        }
+
+       
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelector('.chatbot-form').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+
+                    var fd = new FormData(this); // Extract form data safely
+                    var question = fd.get('question'); // Extract the question input
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/chatbot', true);
+
+                    let chatBox = document.getElementById('prediction4');
+                    chatBox.innerHTML += "<br><b>You:</b> " + question + "<br>";
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                const response = xhr.responseText;
+                                chatBox.innerHTML += "<br><b>Bot:</b> " + response + "<br>";
+                            } else {
+                                chatBox.innerHTML += "<br>Error occurred while predicting.<br>";
+                            }
+                        }
+                    };
+
+                    xhr.send(fd);
+                });
+            });
+        
+        
+        // function send_data4(){
+        //     document.querySelector('.chatbot-form').addEventListener('submit', function(event) {
+        //         event.preventDefault(); // Prevent form from navigating to a new page
+
+        //         var fd = new FormData(document.querySelector('.chatbot-form'));
+        //         var xhr = new XMLHttpRequest();
+        //         // const qs = fd.get('question');
+        //         xhr.open('POST', '/chatbot', true);
+        //         // <b>You:</b> " + qs + 
+        //         document.getElementById('prediction4').innerHTML = "Wait predicting!......";
+        //         xhr.onreadystatechange = function() {
+        //             if (xhr.readyState == XMLHttpRequest.DONE) {
+        //                 if (xhr.status === 200) {
+        //                     const response = xhr.responseText;
+        //                     console.log(response);
+        //                     let chatBox = document.getElementById('prediction4');
+        //                     chatBox.innerHTML += "<br><br><b>Bot:</b> " + response + "<br><br>";
+        //                     console.log(chatBox);
+        //                 } else {
+        //                     document.getElementById('prediction4').innerHTML += "Error occurred while predicting.";
+        //                 }
+        //             }
+        //         };
+        //         xhr.send(fd);
+        //     });
+        // }
     </script>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import numpy as np
@@ -6,11 +6,30 @@ import joblib
 import asyncio
 import pickle as pkl
 from googletrans import Translator
+import whisper
+import google.generativeai as genai
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from pytube import YouTube
+from dotenv import load_dotenv
+import os
 
 # Initialize the translator
 translator = Translator()
+load_dotenv()
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = "static/uploads"
+UPLOAD_FOLDER1 = "static/uploads1"
+UPLOAD_FOLDER2 = "static/uploads2"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["UPLOAD_FOLDER1"] = UPLOAD_FOLDER1
+app.config["UPLOAD_FOLDER2"] = UPLOAD_FOLDER2
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+os.makedirs(UPLOAD_FOLDER, exist_ok=True) # Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER1, exist_ok=True)
+os.makedirs(UPLOAD_FOLDER2, exist_ok=True)
+whisper_model = whisper.load_model("small")
 
 emotion_array = ['sadness', 'joy' , 'love', 'anger', 'fear', 'suppride']
 emotion_emoji = [ '😞 or 😢', '😊 or 😄', '❤️ or 😍', '😡 or 😠', '😨 or 😱', '😌 or 🦚']
@@ -19,7 +38,81 @@ model = load_model('trained_weights/lstm_best_model.h5')
 tkn = pkl.load(open('trained_weights/wordpiece.pkl', 'rb'))
 v = joblib.load("trained_weights/tfv.pkl")
 news = joblib.load("trained_weights/fake_news_model.pkl")
+genai_model = genai.GenerativeModel("gemini-pro")
 
+chat = genai_model.start_chat()
+
+
+
+@app.route("/chatbot", methods=['POST'])
+def chatbot():
+    question  = request.form.get("question")
+    response = chat.send_message(question, stream=True)
+    response.resolve()
+    answer=""
+    for chunk in response:
+        answer += chunk.text
+
+    # result = f"You: {question}<br><b>Bot:</b> {answer}<br><br>"
+    print(answer)
+    return str(answer)
+
+@app.route("/video_emotion_detection", methods=['POST'])
+def video_emotion_detection():
+    print("Route hit")
+    ytvideo = request.form.get("yt_url")
+    print(ytvideo)
+    if ytvideo:
+        print(f"Downloading video from URL: {ytvideo}")
+        yt = YouTube(ytvideo)
+        stream = yt.streams.get_highest_resolution()
+        videoname = yt.title+".mp4"
+        video_path = os.path.join(UPLOAD_FOLDER2, videoname)
+        print(f"Saving video to: {video_path}")
+        stream.download(output_path=UPLOAD_FOLDER2, filename=videoname)
+        video_path = os.path.join(UPLOAD_FOLDER2, videoname)
+        print("Video downloaded successfully!")
+
+    # if "file3" not in request.files:
+    #     return jsonify({"error": "No file uploaded!"})
+    # file = request.files["file3"]
+    # if file.filename == "":
+    #     return jsonify({"error": "No selected file!"})
+    # filepath = os.path.join(app.config["UPLOAD_FOLDER2"], file.filename)
+    # file.save(filepath)
+    # video = mp.VideoFileClip(filepath)
+    # audio_path = "audio.wav"
+    # video.audio.write_audiofile(audio_path)
+    # result = model.transcribe(audio_path, task="translate")
+    # result = result["text"]
+    return "Response"
+
+
+@app.route("/transcribe", methods=["POST"])
+def transcribe():
+    if "file1" not in request.files:
+        return jsonify({"error": "No file uploaded!"})
+    file = request.files["file1"]
+    if file.filename == "":
+        return jsonify({"error": "No selected file!"})
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+    file.save(filepath)
+    result = whisper_model.transcribe(filepath)
+    transcript = result["text"]
+    return transcript
+
+@app.route("/translate", methods=["POST"])
+def translate():
+    if "file2" not in request.files:
+        return jsonify({"error": "No file uploaded!"})
+    file = request.files["file2"]
+    if file.filename == "":
+        return jsonify({"error": "No selected file!"})
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+    file.save(filepath)
+    result = whisper_model.transcribe(filepath, task="translate")
+    transcript = result["text"]
+    return transcript
 
 @app.route('/predict', methods=['POST'])
 async def predict():
